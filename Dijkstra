@@ -1,0 +1,62 @@
+package lab;
+
+import java.util.Scanner;
+
+public class Dijkstra {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int v = in.nextInt();
+        int [][] g = new int[v][v];
+        for (int i = 0; i <v ; i++) {
+            for (int j = 0; j <v ; j++) {
+                g[i][j] = in.nextInt();
+            }
+        }
+        dijkstra(g,0);
+    }
+    public static void dijkstra(int [][]g,int s)
+    {
+        int count = g.length;
+        boolean [] visited = new boolean[count];
+        int [] dis = new int[count];
+        for(int i=0;i<count;i++)
+        {
+            visited[i]=false;
+            dis[i]=Integer.MAX_VALUE;
+        }
+        dis[s]=0;
+        for (int i = 0; i < count; i++) {
+            int u = find(visited,dis);
+            visited[u]=true;
+            for (int v = 0; v < count; v++) {
+                if(!visited[v] && g[u][v]!=0 && (dis[u]+g[u][v]<dis[v]))
+                {
+                    dis[v]=dis[u]+g[u][v];
+                }
+            }
+        }
+        for (int i = 0; i < count; i++) {
+            if(dis[i]==Integer.MAX_VALUE)
+            {
+                System.out.printf("Distance of %s to %s is %s\n",s,i,0);
+            }
+            else
+            {
+                System.out.printf("Distance of %s to %s is %s\n",s,i,dis[i]);
+            }
+        }
+    }
+
+    private static int find(boolean[] visited, int[] dis) {
+        int mind = Integer.MAX_VALUE;
+        int mindv = -1;
+        for (int i = 0; i < dis.length; i++) {
+            if(!visited[i] && dis[i]<=mind)
+            {
+                mind=dis[i];
+                mindv=i;
+            }
+        }
+        return mindv;
+    }
+}
